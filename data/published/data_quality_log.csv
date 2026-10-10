@@ -1,0 +1,12 @@
+stage,check,rows_affected,finding,action
+ingest,Columns mapped,125,ohls_valentines_2025.csv: 14 columns mapped,Tagged as VAL25
+ingest,Columns mapped,80,ohls_valentines_2026.csv: 15 columns mapped,Tagged as VAL26
+ingest,Columns mapped,80,ohls_world_blood_donor_day_2025.csv: 15 columns mapped,Tagged as WBDD25
+anonymise,PII removed,285,4 PII columns dropped; 190 unique people linked by phone or email,Replaced with HMAC donor_id
+clean,Wrong form,3,Responses dated on another drive's day,Re-assigned by date
+clean,Duplicates,6,Same person submitted twice for one drive,Kept the latest
+clean,Implausible ages,1,Outside 16–65,Set to blank
+clean,Missing gender,71,Gender left blank,Labelled 'Not captured'
+clean,Institution spellings,10,Free-text institution names,Grouped into 5 groups
+clean,Free-text reasons,65,12 different wordings,Classified into 7 reasons
+model,Star schema,279,fact_responses 279 rows · dim_donor 190 · dim_drive 3,Written to data/published/

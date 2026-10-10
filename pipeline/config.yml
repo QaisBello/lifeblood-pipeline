@@ -1,0 +1,50 @@
+# Pipeline configuration. Adding a new drive = one entry under `drives`; new form wording = one alias.
+drives:
+  - {id: VAL25,  name: "Valentine's Day Drive 2025",  date: 2025-02-14, file: "*valentines_2025*"}
+  - {id: WBDD25, name: "World Blood Donor Day 2025",  date: 2025-06-27, file: "*world_blood_donor_day_2025*"}
+  - {id: VAL26,  name: "Valentine's Day Drive 2026",  date: 2026-02-13, file: "*valentines_2026*"}
+
+# canonical column -> substrings that identify it in any form export (case-insensitive, first match wins)
+columns:
+  timestamp:   ["timestamp"]
+  email:       ["email"]
+  phone:       ["phone"]
+  first_name:  ["first name"]
+  last_name:   ["last name"]
+  age:         ["age"]
+  gender:      ["gender"]
+  institution: ["institution"]
+  blood_group: ["blood group"]
+  genotype:    ["genotype"]
+  first_time:  ["first time donor"]
+  times:       ["how many times"]
+  donated:     ["able to donate"]
+  reason:      ["if no, why"]
+  experience:  ["experience"]
+  will_return: ["donate at our next"]
+  reminder:    ["reminded"]
+
+pii: [email, phone, first_name, last_name]
+
+rules:
+  age_valid: [16, 65]
+  institution_groups:          # first matching group wins
+    LASUCOM: ["com", "medicine", "lasuth"]
+    LASU (Main): ["lasu", "lagos state university", "sdg"]
+    Other University: ["unilag", "unilorin", "laau"]
+    Workplace / Other: ["civil servant", "staff"]
+  deferral_reasons:            # regex patterns, checked in order
+    Low PCV / Haemoglobin: "pcv|hb|haemo|hemo|blood count|low blood"
+    Low body weight: "weight|underweight|kg"
+    Underage: "underage|not up to 18"
+    Menstruation: "menstru"
+    Fasting: "fast"
+    Medication: "drug|malaria"
+
+checks:                        # run after modelling; `error` fails the run, `warn` is reported
+  - {name: "No PII columns in output", level: error}
+  - {name: "One row per donor per drive", level: error}
+  - {name: "Every row maps to a known drive", level: error}
+  - {name: "Ages within valid range or blank", level: error}
+  - {name: "Deferral reason set for every non-donation", level: warn}
+  - {name: "Donation rate between 30% and 95%", level: warn}

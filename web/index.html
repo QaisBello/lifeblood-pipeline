@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>body{margin:0}</style>
+<script>(function(){var S={"../runs/history.json": "[\n  {\n    \"run_id\": \"20261010T150518Z-f5fa31\",\n    \"finished_at\": \"2026-10-10T15:05:18+00:00\",\n    \"status\": \"success\",\n    \"trigger\": \"replay\",\n    \"commit\": \"\",\n    \"rows_in\": 125,\n    \"rows_out\": 122,\n    \"donors\": 119,\n    \"donation_rate\": 0.7213\n  },\n  {\n    \"run_id\": \"20261010T150520Z-24eacb\",\n    \"finished_at\": \"2026-10-10T15:05:20+00:00\",\n    \"status\": \"success\",\n    \"trigger\": \"replay\",\n    \"commit\": \"\",\n    \"rows_in\": 205,\n    \"rows_out\": 199,\n    \"donors\": 154,\n    \"donation_rate\": 0.7437\n  },\n  {\n    \"run_id\": \"20261010T150521Z-aa0938\",\n    \"finished_at\": \"2026-10-10T15:05:21+00:00\",\n    \"status\": \"success\",\n    \"trigger\": \"replay\",\n    \"commit\": \"\",\n    \"rows_in\": 285,\n    \"rows_out\": 279,\n    \"donors\": 190,\n    \"donation_rate\": 0.767\n  }\n]", "../runs/latest.json": "{\n  \"run_id\": \"20261010T150521Z-aa0938\",\n  \"finished_at\": \"2026-10-10T15:05:21+00:00\",\n  \"status\": \"success\",\n  \"trigger\": \"replay\",\n  \"commit\": \"\",\n  \"source_files\": [\n    \"ohls_valentines_2025.csv\",\n    \"ohls_valentines_2026.csv\",\n    \"ohls_world_blood_donor_day_2025.csv\"\n  ],\n  \"rows_in\": 285,\n  \"rows_out\": 279,\n  \"donors\": 190,\n  \"donation_rate\": 0.767,\n  \"stages\": [\n    {\n      \"stage\": \"ingest\",\n      \"rows_out\": 285,\n      \"seconds\": 0.015\n    },\n    {\n      \"stage\": \"anonymise\",\n      \"rows_out\": 285,\n      \"seconds\": 0.005\n    },\n    {\n      \"stage\": \"clean\",\n      \"rows_out\": 279,\n      \"seconds\": 0.019\n    },\n    {\n      \"stage\": \"model\",\n      \"rows_out\": 279,\n      \"seconds\": 0.019\n    },\n    {\n      \"stage\": \"validate\",\n      \"rows_out\": 279,\n      \"seconds\": 0.002\n    },\n    {\n      \"stage\": \"publish\",\n      \"rows_out\": 279,\n      \"seconds\": 0.0\n    }\n  ],\n  \"checks\": [\n    {\n      \"name\": \"No PII columns in output\",\n      \"level\": \"error\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"One row per donor per drive\",\n      \"level\": \"error\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"Every row maps to a known drive\",\n      \"level\": \"error\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"Ages within valid range or blank\",\n      \"level\": \"error\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"Deferral reason set for every non-donation\",\n      \"level\": \"warn\",\n      \"passed\": false\n    },\n    {\n      \"name\": \"Donation rate between 30% and 95%\",\n      \"level\": \"warn\",\n      \"passed\": true\n    }\n  ],\n  \"log\": [\n    {\n      \"stage\": \"ingest\",\n      \"check\": \"Columns mapped\",\n      \"rows_affected\": 125,\n      \"finding\": \"ohls_valentines_2025.csv: 14 columns mapped\",\n      \"action\": \"Tagged as VAL25\"\n    },\n    {\n      \"stage\": \"ingest\",\n      \"check\": \"Columns mapped\",\n      \"rows_affected\": 80,\n      \"finding\": \"ohls_valentines_2026.csv: 15 columns mapped\",\n      \"action\": \"Tagged as VAL26\"\n    },\n    {\n      \"stage\": \"ingest\",\n      \"check\": \"Columns mapped\",\n      \"rows_affected\": 80,\n      \"finding\": \"ohls_world_blood_donor_day_2025.csv: 15 columns mapped\",\n      \"action\": \"Tagged as WBDD25\"\n    },\n    {\n      \"stage\": \"anonymise\",\n      \"check\": \"PII removed\",\n      \"rows_affected\": 285,\n      \"finding\": \"4 PII columns dropped; 190 unique people linked by phone or email\",\n      \"action\": \"Replaced with HMAC donor_id\"\n    },\n    {\n      \"stage\": \"clean\",\n      \"check\": \"Wrong form\",\n      \"rows_affected\": 3,\n      \"finding\": \"Responses dated on another drive's day\",\n      \"action\": \"Re-assigned by date\"\n    },\n    {\n      \"stage\": \"clean\",\n      \"check\": \"Duplicates\",\n      \"rows_affected\": 6,\n      \"finding\": \"Same person submitted twice for one drive\",\n      \"action\": \"Kept the latest\"\n    },\n    {\n      \"stage\": \"clean\",\n      \"check\": \"Implausible ages\",\n      \"rows_affected\": 1,\n      \"finding\": \"Outside 16\\u201365\",\n      \"action\": \"Set to blank\"\n    },\n    {\n      \"stage\": \"clean\",\n      \"check\": \"Missing gender\",\n      \"rows_affected\": 71,\n      \"finding\": \"Gender left blank\",\n      \"action\": \"Labelled 'Not captured'\"\n    },\n    {\n      \"stage\": \"clean\",\n      \"check\": \"Institution spellings\",\n      \"rows_affected\": 10,\n      \"finding\": \"Free-text institution names\",\n      \"action\": \"Grouped into 5 groups\"\n    },\n    {\n      \"stage\": \"clean\",\n      \"check\": \"Free-text reasons\",\n      \"rows_affected\": 65,\n      \"finding\": \"12 different wordings\",\n      \"action\": \"Classified into 7 reasons\"\n    },\n    {\n      \"stage\": \"model\",\n      \"check\": \"Star schema\",\n      \"rows_affected\": 279,\n      \"finding\": \"fact_responses 279 rows \\u00b7 dim_donor 190 \\u00b7 dim_drive 3\",\n      \"action\": \"Written to data/published/\"\n    }\n  ]\n}"};var f=window.fetch.bind(window);
+function k(u){u=String(u&&u.url||u).split('?')[0];for(var p in S){if(u===p||u.slice(-(p.length+1))==='/'+p)return p;}return null;}
+window.fetch=function(u,o){var key=k(u);return f(u,o).then(function(r){if(r.ok||!key)return r;return new Response(S[key]);},function(e){if(!key)throw e;return new Response(S[key]);});};})();</script>
+</head>
+<body>
+<title>Lifeblood Pipeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700;900&family=Red+Hat+Text:wght@400;500;700&family=Red+Hat+Mono:wght@400;500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+/* Layout: a pipeline control room. Status strip first, then the stage graph with live row counts and the PII boundary, then checks, history and the change log. */
+:root{
+  --paper:#f3f6f5; --card:#fcfdfd; --ink:#0c1715; --ink-2:#4b5a57; --muted:#83918e; --rule:#dce4e2; --axis:#c3cfcc;
+  --flow:#0f8a7a; --flow-2:#0b6b5f; --pii:#d03b3b; --ok:#0b8a0b; --warn:#a86f00; --bad:#d03b3b; --node:#ffffff;
+  --display:"Red Hat Display",system-ui,sans-serif; --sans:"Red Hat Text",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"Red Hat Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#0a1110; --card:#111b19; --ink:#e8f0ee; --ink-2:#a9b8b5; --muted:#71817d; --rule:#22312e; --axis:#2f403c;
+  --flow:#2bb39f; --flow-2:#5fd0bf; --pii:#e66767; --ok:#0ca30c; --warn:#fab219; --bad:#e66767; --node:#162320; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --paper:#0a1110; --card:#111b19; --ink:#e8f0ee; --ink-2:#a9b8b5; --muted:#71817d; --rule:#22312e; --axis:#2f403c;
+  --flow:#2bb39f; --flow-2:#5fd0bf; --pii:#e66767; --ok:#0ca30c; --warn:#fab219; --bad:#e66767; --node:#162320; color-scheme:dark; }
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:clamp(16px,3vw,32px);padding-block:26px 56px;display:flex;flex-direction:column;gap:18px}
+h1,h2,p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.head{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px 40px;align-items:end}
+.head h1{font-family:var(--display);font-weight:900;font-size:clamp(44px,7vw,84px);line-height:.92;letter-spacing:-.03em;margin-top:10px}
+.head h1 span{color:var(--flow)}
+.lede{color:var(--ink-2);font-size:17px;max-width:56ch;margin-top:14px}
+.lede b{color:var(--ink)}
+.src{font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;gap:6px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.src a{color:var(--ink)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}.dot.live{background:var(--ok)}
+.status{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:auto 1fr;gap:6px 16px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;font-weight:500;padding:6px 12px;border-radius:99px;grid-row:span 2}
+.pill.success{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok)}
+.pill.failed{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.pill i{width:9px;height:9px;border-radius:50%;background:currentColor;animation:beat 2s ease-in-out infinite}
+@keyframes beat{50%{opacity:.35}}
+.status .meta{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.status .big{font-family:var(--display);font-weight:700;font-size:24px}
+.panel{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel h2{font-family:var(--display);font-weight:700;font-size:26px;letter-spacing:-.01em;line-height:1.1}
+.panel .sub{color:var(--ink-2);max-width:72ch}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.s12{grid-column:span 12}.s5{grid-column:span 5}.s7{grid-column:span 7}
+.dagwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+#dag svg{max-width:none;display:block}
+svg{display:block;max-width:100%}
+svg text{font-family:var(--mono);font-size:11px;fill:var(--ink-2)}
+.checks{display:flex;flex-direction:column;gap:8px}
+.check{display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:center;padding:9px 12px;border:1px solid var(--rule);border-radius:10px}
+.chip{font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:99px;text-align:center;border:1px solid currentColor}
+.chip.pass{color:var(--ok)}.chip.warn{color:var(--warn)}.chip.fail{color:var(--bad)}
+.check .lv{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:500}
+td.n{font-family:var(--mono);text-align:right;white-space:nowrap}
+td.st{font-family:var(--mono);font-size:12px;color:var(--flow-2);white-space:nowrap}
+.wire{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;counter-reset:w}
+.wire div{border:1px dashed var(--rule);border-radius:10px;padding:12px;font-size:13.5px;color:var(--ink-2);min-width:0}
+.wire b{display:block;font-family:var(--display);font-size:15px;color:var(--ink);margin-bottom:4px}
+.wire div::before{counter-increment:w;content:counter(w);font-family:var(--mono);font-size:11px;color:var(--flow);display:block}
+.tip{position:fixed;pointer-events:none;z-index:20;background:var(--ink);color:var(--card);font-size:12.5px;padding:7px 9px;border-radius:6px;max-width:260px;opacity:0;transition:opacity .12s}
+footer{color:var(--muted);font-size:12.5px;max-width:95ch}
+@media (max-width:900px){.head{grid-template-columns:minmax(0,1fr)}.s5,.s7{grid-column:span 12}.wire{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+
+
+<div class="wrap">
+  <header class="head">
+    <div>
+      <div class="eyebrow">Data engineering · ELT pipeline · GitHub Actions</div>
+      <h1>Lifeblood <span>Pipeline</span></h1>
+      <p class="lede">Messy form exports go in. Clean, anonymised, tested tables come out, ready for the dashboard. Every run is <b>automated, checked and logged</b>, and personal data never gets past stage two.</p>
+      <div class="src" id="src"><span class="dot"></span>Loading the latest run…</div>
+    </div>
+    <div class="status" id="status"></div>
+  </header>
+
+  <section class="panel">
+    <div class="eyebrow">01 · Latest run</div>
+    <h2>Rows through every stage</h2>
+    <p class="sub">Each box is a stage of <code>python -m pipeline.run</code>. Numbers are rows out of that stage in the latest run, and the red line is the PII boundary: names, emails and phone numbers are dropped in <b>anonymise</b> and never reach a published file. Hover a stage for what it changed.</p>
+    <div class="dagwrap"><div id="dag"></div></div>
+  </section>
+
+  <section class="grid">
+    <article class="panel s5">
+      <div class="eyebrow">02 · Quality gates</div>
+      <h2>Checks</h2>
+      <p class="sub">An <b>error</b> blocks publishing and fails the GitHub Action. A <b>warn</b> is reported but doesn't stop the run.</p>
+      <div class="checks" id="checks"></div>
+    </article>
+    <article class="panel s7">
+      <div class="eyebrow">03 · Run history</div>
+      <h2>Every run, logged</h2>
+      <p class="sub">Rows published per run. The first three runs replayed the drives in order as each export arrived.</p>
+      <div id="hist"></div>
+      <div class="tablewrap"><table id="hist-t"></table></div>
+    </article>
+    <article class="panel s12">
+      <div class="eyebrow">04 · Change log</div>
+      <h2>What the latest run changed</h2>
+      <div class="tablewrap"><table id="log"></table></div>
+    </article>
+    <article class="panel s12">
+      <div class="eyebrow">05 · How it's wired</div>
+      <h2>From a Google Form to a live dashboard</h2>
+      <div class="wire">
+        <div><b>Export</b>A drive's Google Form responses are exported and dropped into <code>incoming/</code>. A new drive is one line in <code>config.yml</code>.</div>
+        <div><b>Trigger</b>The push, a weekly schedule or a manual click starts the GitHub Action.</div>
+        <div><b>Test</b><code>pytest</code> runs first. A broken stage never touches the data.</div>
+        <div><b>Run &amp; gate</b>Ingest → anonymise → clean → model → validate. A failed error-level check stops the publish.</div>
+        <div><b>Publish</b>Tables and the run manifest are committed. Dashboards read them straight from GitHub on the next page load.</div>
+      </div>
+    </article>
+  </section>
+  <footer>The data shown here is <b>synthetic</b>: generated by <code>samples/generate.py</code> to mimic the real exports' structure and mess, with no real people in it. The same pipeline runs on the real One Health Lifesavers exports privately, using a secret key for donor IDs. Built by Qais Adeniji-Bello.</footer>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+const SOURCE={repo:"QaisBello/lifeblood-pipeline",branch:"main"};
+const FALLBACKS=["../"];
+const RAW=f=>`https://raw.githubusercontent.com/${SOURCE.repo}/${SOURCE.branch}/${f}`;
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const fmt=d3.format(","); let L=null,H=[];
+const tip=document.getElementById("tip"); const showTip=(e,h)=>{tip.innerHTML=h;tip.style.opacity=1;tip.style.left=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-8)+"px";tip.style.top=(e.clientY+14)+"px";}; const hideTip=()=>tip.style.opacity=0;
+const ago=iso=>{const s=(Date.now()-new Date(iso))/1000; return s<3600?`${Math.round(s/60)} min ago`:s<86400?`${Math.round(s/3600)} h ago`:`${Math.round(s/86400)} days ago`;};
+
+function status(){
+  document.getElementById("status").innerHTML=`<span class="pill ${L.status}"><i></i>${L.status==="success"?"Last run passed":"Last run failed"}</span>
+    <div><div class="big">${fmt(L.rows_in)} → ${fmt(L.rows_out)} rows</div><div class="meta">${fmt(L.donors)} donors · ${(L.donation_rate*100).toFixed(1)}% donated</div></div>
+    <div class="meta" style="grid-column:2">run ${L.run_id} · ${L.trigger} · ${new Date(L.finished_at).toLocaleString(undefined,{dateStyle:"medium",timeStyle:"short"})} (${ago(L.finished_at)})</div>`;
+}
+
+function dag(){
+  const host=document.getElementById("dag"); host.innerHTML="";
+  const W=Math.max(host.clientWidth,880), H=230;
+  const ST=L.stages.map(s=>({...s})); const n=ST.length;
+  const left=150, right=170, gap=(W-left-right)/n, bw=Math.min(118,gap-26), bh=78, y=H/2-bh/2+6;
+  const svg=d3.select(host).append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width",W).attr("height",H).attr("role","img").attr("aria-label","Pipeline stages with row counts");
+  const xs=i=>left+i*gap+(gap-bw)/2;
+  // sources
+  L.source_files.forEach((f,i)=>{const yy=H/2-((L.source_files.length-1)*26)/2+i*26;
+    svg.append("text").attr("x",8).attr("y",yy).attr("dy",".35em").style("fill",css("--ink")).text(f.replace(/^ohls_/,"").replace(/^world_/,"").replace(/\.csv$/,"").slice(0,22));
+    svg.append("path").attr("d",`M${120},${yy} C${135},${yy} ${135},${H/2+6} ${xs(0)},${H/2+6}`).attr("fill","none").attr("stroke",css("--axis")).attr("stroke-width",1.5);});
+  svg.append("text").attr("x",8).attr("y",22).style("font-size","10px").style("fill",css("--muted")).text("SOURCE EXPORTS");
+  const bx=(xs(1)+bw+xs(2))/2;
+  // edges + flow dots
+  for(let i=0;i<n-1;i++){ const x1=xs(i)+bw, x2=xs(i+1), yy=H/2+6;
+    svg.append("line").attr("x1",x1).attr("x2",x2).attr("y1",yy).attr("y2",yy).attr("stroke",css("--flow")).attr("stroke-width",2);
+    if(!matchMedia("(prefers-reduced-motion: reduce)").matches){ const c=svg.append("circle").attr("r",3).attr("fill",css("--flow-2")).attr("cy",yy);
+      (function loop(){c.attr("cx",x1).transition().duration(1400).delay(i*180).ease(d3.easeLinear).attr("cx",x2).on("end",loop);})(); } }
+  // PII boundary between anonymise (1) and clean (2)
+  svg.append("line").attr("x1",bx).attr("x2",bx).attr("y1",28).attr("y2",H-18).attr("stroke",css("--pii")).attr("stroke-width",2).attr("stroke-dasharray","6 5");
+  svg.append("text").attr("x",bx-6).attr("y",36).attr("text-anchor","end").style("fill",css("--pii")).text("PII");
+  svg.append("text").attr("x",bx+6).attr("y",36).style("fill",css("--pii")).text("NO PII");
+  const NOTE=s=>L.log.filter(l=>l.stage===s.stage).map(l=>`${l.check}: ${l.finding}`).join("<br>")||(s.stage==="validate"?`${L.checks.filter(c=>c.passed).length}/${L.checks.length} checks passed`:"Wrote tables and the run manifest");
+  ST.forEach((s,i)=>{const g=svg.append("g").attr("transform",`translate(${xs(i)},${y})`);
+    const drop=i>0?(ST[i-1].rows_out??0)-(s.rows_out??0):0;
+    if(drop>0) g.append("text").attr("x",bw/2).attr("y",bh+20).attr("text-anchor","middle").style("font-weight",700).style("font-size","11px").style("fill",css("--warn")).text(`−${drop} rows`);
+    g.append("rect").attr("width",bw).attr("height",bh).attr("rx",10).attr("fill",css("--node")).attr("stroke",s.stage==="anonymise"?css("--pii"):css("--flow")).attr("stroke-width",1.8);
+    g.append("text").attr("x",12).attr("y",20).style("font-size","10px").style("fill",css("--muted")).text(`${i+1} · ${s.stage.toUpperCase()}`);
+    g.append("text").attr("x",12).attr("y",48).style("font-family","var(--display)").style("font-weight",700).style("font-size","22px").style("fill",css("--ink")).text(s.rows_out==null?"–":fmt(s.rows_out));
+    g.append("text").attr("x",12).attr("y",66).style("font-size","10px").text(`rows · ${s.seconds}s`);
+    g.append("rect").attr("width",bw).attr("height",bh).attr("fill","transparent").on("mousemove",e=>showTip(e,`<b>${s.stage}</b><br>${NOTE(s)}`)).on("mouseleave",hideTip);});
+  // outputs
+  const ox=W-right+24, outs=["fact_responses","dim_donor","dim_drive","run manifest"];
+  svg.append("text").attr("x",ox).attr("y",22).style("font-size","10px").style("fill",css("--muted")).text("PUBLISHED");
+  outs.forEach((o,i)=>{const yy=H/2-((outs.length-1)*26)/2+i*26;
+    svg.append("path").attr("d",`M${xs(n-1)+bw},${H/2+6} C${ox-12},${H/2+6} ${ox-12},${yy} ${ox-4},${yy}`).attr("fill","none").attr("stroke",css("--axis")).attr("stroke-width",1.5);
+    svg.append("text").attr("x",ox).attr("y",yy).attr("dy",".35em").style("fill",css("--ink")).text(o);});
+}
+
+function checks(){
+  document.getElementById("checks").innerHTML=L.checks.map(c=>{const k=c.passed?"pass":c.level==="error"?"fail":"warn";
+    return `<div class="check"><span class="chip ${k}">${k.toUpperCase()}</span><span>${c.name}</span><span class="lv">${c.level}</span></div>`;}).join("");
+}
+function history(){
+  const host=document.getElementById("hist"); host.innerHTML="";
+  const W=Math.max(host.clientWidth,280), Hh=150, m={l:44,r:12,t:12,b:22};
+  const x=d3.scalePoint().domain(H.map(r=>r.run_id)).range([m.l+10,W-m.r-10]), y=d3.scaleLinear().domain([0,d3.max(H,r=>r.rows_in)*1.1]).nice().range([Hh-m.b,m.t]);
+  const svg=d3.select(host).append("svg").attr("viewBox",`0 0 ${W} ${Hh}`).attr("width",W).attr("height",Hh);
+  svg.append("g").attr("transform",`translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4)).call(g=>{g.select(".domain").remove();g.selectAll("line").attr("x2",W-m.l-m.r).attr("stroke",css("--rule"));g.selectAll("text").style("fill",css("--muted"));});
+  svg.append("path").datum(H).attr("fill","none").attr("stroke",css("--flow")).attr("stroke-width",2).attr("d",d3.line().x(r=>x(r.run_id)).y(r=>y(r.rows_out)));
+  svg.selectAll(null).data(H).join("circle").attr("cx",r=>x(r.run_id)).attr("cy",r=>y(r.rows_out)).attr("r",6).attr("fill",r=>r.status==="success"?css("--ok"):css("--bad")).attr("stroke",css("--card")).attr("stroke-width",2)
+    .on("mousemove",(e,r)=>showTip(e,`<b>${r.status}</b> · ${r.trigger}<br>${fmt(r.rows_in)} in → ${fmt(r.rows_out)} out<br>${new Date(r.finished_at).toLocaleString()}`)).on("mouseleave",hideTip);
+  document.getElementById("hist-t").innerHTML=`<thead><tr><th>Run</th><th>Trigger</th><th style="text-align:right">In</th><th style="text-align:right">Out</th><th style="text-align:right">Donors</th><th>Status</th></tr></thead><tbody>`+
+    H.slice().reverse().map(r=>`<tr><td style="font-family:var(--mono);font-size:12px">${r.run_id}</td><td>${r.trigger}</td><td class="n">${fmt(r.rows_in)}</td><td class="n">${fmt(r.rows_out)}</td><td class="n">${fmt(r.donors)}</td><td><span class="chip ${r.status==="success"?"pass":"fail"}">${r.status}</span></td></tr>`).join("")+"</tbody>";
+}
+function log(){
+  document.getElementById("log").innerHTML=`<thead><tr><th>Stage</th><th>Step</th><th style="text-align:right">Rows</th><th>Finding</th><th>Action</th></tr></thead><tbody>`+
+    L.log.map(r=>`<tr><td class="st">${r.stage}</td><td>${r.check}</td><td class="n">${fmt(r.rows_affected)}</td><td>${r.finding}</td><td>${r.action}</td></tr>`).join("")+"</tbody>";
+}
+async function get(f){for(const [u,k] of [[RAW(f),"live"],...FALLBACKS.map(p=>[p+f,"snapshot"])]){try{const r=await fetch(u,{cache:"no-store"});if(!r.ok)throw 0;return {d:await r.json(),k};}catch(e){}}throw new Error(f);}
+async function boot(){
+  const src=document.getElementById("src");
+  try{ const a=await get("runs/latest.json"); L=a.d; H=(await get("runs/history.json")).d;
+    src.innerHTML=a.k==="live"?`<span class="dot live"></span>Run manifest live from <a href="https://github.com/${SOURCE.repo}/tree/${SOURCE.branch}/runs" target="_blank" rel="noopener">github.com/${SOURCE.repo}</a>`:`<span class="dot"></span>Bundled snapshot of the latest run`;
+    status(); dag(); checks(); history(); log();
+  }catch(e){ src.innerHTML=`<span class="dot" style="background:var(--bad)"></span>Couldn't load the run manifest. Refresh to try again.`; }
+}
+boot();
+let rt; addEventListener("resize",()=>{if(!L)return;clearTimeout(rt);rt=setTimeout(()=>{dag();history();},150);});
+new MutationObserver(()=>L&&(dag(),history())).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+</script>
+
+</body>
+</html>

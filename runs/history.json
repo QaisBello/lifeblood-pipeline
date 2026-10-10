@@ -1,0 +1,35 @@
+[
+  {
+    "run_id": "20261010T150518Z-f5fa31",
+    "finished_at": "2026-10-10T15:05:18+00:00",
+    "status": "success",
+    "trigger": "replay",
+    "commit": "",
+    "rows_in": 125,
+    "rows_out": 122,
+    "donors": 119,
+    "donation_rate": 0.7213
+  },
+  {
+    "run_id": "20261010T150520Z-24eacb",
+    "finished_at": "2026-10-10T15:05:20+00:00",
+    "status": "success",
+    "trigger": "replay",
+    "commit": "",
+    "rows_in": 205,
+    "rows_out": 199,
+    "donors": 154,
+    "donation_rate": 0.7437
+  },
+  {
+    "run_id": "20261010T150521Z-aa0938",
+    "finished_at": "2026-10-10T15:05:21+00:00",
+    "status": "success",
+    "trigger": "replay",
+    "commit": "",
+    "rows_in": 285,
+    "rows_out": 279,
+    "donors": 190,
+    "donation_rate": 0.767
+  }
+]
