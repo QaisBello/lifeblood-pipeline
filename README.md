@@ -8,7 +8,7 @@ Track: Data Engineering · Python, pandas, YAML config, pytest, GitHub Actions �
 
 ## Why it exists
 
-[Lifeblood Ledger](https://github.com/QaisBello/lifeblood-ledger) began as a one-off cleaning script for One Health Lifesavers' blood drives. Every new drive meant re-running it by hand and re-checking the output by eye. This repo turns that script into a pipeline. A new export goes in, and tested tables, a quality log and a run record come out with no manual steps. Personal data is removed at stage two and never written to a published file.
+[Lifeblood Ledger](https://github.com/QaisBello/One-health-life-savers-blood-ledger) began as a one-off cleaning script for One Health Lifesavers' blood drives. Every new drive meant re-running it by hand and re-checking the output by eye. This repo turns that script into a pipeline. A new export goes in, and tested tables, a quality log and a run record come out with no manual steps. Personal data is removed at stage two and never written to a published file.
 
 ## How it works
 
@@ -66,6 +66,10 @@ The same pipeline runs on the real One Health Lifesavers exports privately, with
 | Donors | 190 |
 | Checks | 5 pass, 1 warn |
 | History | 3 replayed runs: 125→122, 205→199, 285→279 |
+
+## Power BI version
+
+The same project as a ready-made Power BI report, in [`powerbi/`](powerbi/): the control room (latest run, stages, quality gates, change log, run history, parsed from the JSON run records) and the published data. Open `powerbi/Lifeblood_Pipeline.pbip` in Power BI Desktop and click Refresh; it reads this repo's data from GitHub.
 
 ## Run it locally
 
