@@ -1,0 +1,164 @@
+/// The published fact table: one row per donor per drive, anonymised (keyed HMAC donor IDs).
+table Responses
+
+	/// Published check-ins.
+	measure 'Check-ins' = COUNTROWS ( Responses )
+		formatString: #,0
+		displayFolder: Published data
+
+	/// Distinct anonymised donors.
+	measure Donors = DISTINCTCOUNT ( Responses[donor_id] )
+		formatString: #,0
+		displayFolder: Published data
+
+	/// Share of check-ins who donated.
+	measure 'Donation Rate' = DIVIDE ( CALCULATE ( [Check-ins], Responses[donated] == TRUE () ), [Check-ins] )
+		formatString: 0.0%
+		displayFolder: Published data
+
+	/// Check-ins turned away.
+	measure Deferrals = CALCULATE ( [Check-ins], Responses[donated] == FALSE () )
+		formatString: #,0
+		displayFolder: Published data
+
+	column response_id
+		dataType: string
+		isHidden
+		isKey
+		summarizeBy: none
+		sourceColumn: response_id
+
+	column donor_id
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: donor_id
+
+	column drive_id
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: drive_id
+
+	column drive_name
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: drive_name
+
+	column drive_date
+		dataType: dateTime
+		isHidden
+		summarizeBy: none
+		sourceColumn: drive_date
+
+	column submitted_at
+		dataType: dateTime
+		isHidden
+		summarizeBy: none
+		sourceColumn: submitted_at
+
+	column age
+		dataType: double
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: age
+
+	column age_band
+		dataType: string
+		summarizeBy: none
+		sourceColumn: age_band
+
+	column gender
+		dataType: string
+		summarizeBy: none
+		sourceColumn: gender
+
+	column institution_group
+		dataType: string
+		summarizeBy: none
+		sourceColumn: institution_group
+
+	column blood_group
+		dataType: string
+		summarizeBy: none
+		sourceColumn: blood_group
+
+	column first_time
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: first_time
+
+	column donated
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: donated
+
+	column deferral_reason
+		dataType: string
+		summarizeBy: none
+		sourceColumn: deferral_reason
+
+	column will_return
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: will_return
+
+	column wants_reminder
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: wants_reminder
+
+	column has_later_drive
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: has_later_drive
+
+	column came_back_later
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: came_back_later
+
+	partition Responses = m
+		mode: import
+		source = ```
+				let
+				    Source = Csv.Document(
+				        Web.Contents(BaseUrl, [RelativePath = "data/published/fact_responses.csv"]),
+				        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				    ),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    // empty cells and R's NA arrive as text and would fail the type change: make them null
+				    #"Blanks to Null" = Table.TransformColumns(#"Promoted Headers", {}, each if _ = "" or _ = "NA" then null else _),
+				    // True/TRUE/true all become true: pandas writes True, R writes TRUE
+				    #"Booleans" = Table.TransformColumns(#"Blanks to Null", {{"first_time", each if _ = null then null else Text.Lower(_)}, {"donated", each if _ = null then null else Text.Lower(_)}, {"will_return", each if _ = null then null else Text.Lower(_)}, {"wants_reminder", each if _ = null then null else Text.Lower(_)}, {"has_later_drive", each if _ = null then null else Text.Lower(_)}, {"came_back_later", each if _ = null then null else Text.Lower(_)}}),
+				    #"Changed Types" = Table.TransformColumnTypes(
+				        #"Booleans",
+				        {
+				            {"response_id", type text},
+				            {"donor_id", type text},
+				            {"drive_id", type text},
+				            {"drive_name", type text},
+				            {"drive_date", type datetime},
+				            {"submitted_at", type datetime},
+				            {"age", type number},
+				            {"age_band", type text},
+				            {"gender", type text},
+				            {"institution_group", type text},
+				            {"blood_group", type text},
+				            {"first_time", type logical},
+				            {"donated", type logical},
+				            {"deferral_reason", type text},
+				            {"will_return", type logical},
+				            {"wants_reminder", type logical},
+				            {"has_later_drive", type logical},
+				            {"came_back_later", type logical}
+				        },
+				        "en-US"
+				    ),
+				    #"Filtered Rows" = #"Changed Types",
+				    Result = #"Filtered Rows"
+				in
+				    Result
+				```
+

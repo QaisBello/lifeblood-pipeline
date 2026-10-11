@@ -1,0 +1,2 @@
+/// The root of this repo on GitHub: run records in runs/, published tables in data/published/.
+expression BaseUrl = "https://raw.githubusercontent.com/QaisBello/One-health-life-savers-blood-ledger-elt/main/" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]

@@ -1,0 +1,128 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "a933e2c654c15b069157",
+  "position": {
+    "x": 440,
+    "y": 446,
+    "z": 13,
+    "width": 816,
+    "height": 262,
+    "tabOrder": 13
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Change Log"
+                    }
+                  },
+                  "Property": "stage"
+                }
+              },
+              "queryRef": "Change Log.stage",
+              "nativeQueryRef": "stage",
+              "displayName": "Stage"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Change Log"
+                    }
+                  },
+                  "Property": "check"
+                }
+              },
+              "queryRef": "Change Log.check",
+              "nativeQueryRef": "check",
+              "displayName": "Check"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Change Log"
+                    }
+                  },
+                  "Property": "rows_affected"
+                }
+              },
+              "queryRef": "Change Log.rows_affected",
+              "nativeQueryRef": "rows_affected",
+              "displayName": "Rows"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Change Log"
+                    }
+                  },
+                  "Property": "finding"
+                }
+              },
+              "queryRef": "Change Log.finding",
+              "nativeQueryRef": "finding",
+              "displayName": "Finding"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Change Log"
+                    }
+                  },
+                  "Property": "action"
+                }
+              },
+              "queryRef": "Change Log.action",
+              "nativeQueryRef": "action",
+              "displayName": "Action"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Change log'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

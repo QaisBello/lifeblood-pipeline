@@ -1,0 +1,584 @@
+{
+  "tables": [
+    {
+      "name": "Runs",
+      "description": "Every pipeline run (runs/history.json): when it finished, its status and row counts.",
+      "columns": [
+        {
+          "name": "run_id",
+          "type": "string",
+          "hidden": false,
+          "key": true
+        },
+        {
+          "name": "finished_at",
+          "type": "dateTime",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "trigger",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "rows_in",
+          "type": "int64",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "rows_out",
+          "type": "int64",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "donors",
+          "type": "int64",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "donation_rate",
+          "type": "double",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "Run Number",
+          "type": "int64",
+          "hidden": false,
+          "key": false
+        }
+      ]
+    },
+    {
+      "name": "Stages",
+      "description": "The latest run's stages in order (runs/latest.json): rows out and seconds taken.",
+      "columns": [
+        {
+          "name": "stage",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "rows_out",
+          "type": "int64",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "seconds",
+          "type": "double",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "Stage Order",
+          "type": "int64",
+          "hidden": true,
+          "key": false
+        }
+      ]
+    },
+    {
+      "name": "Checks",
+      "description": "Quality gates of the latest run (runs/latest.json). An error stops publishing; a warning is logged.",
+      "columns": [
+        {
+          "name": "name",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "level",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "passed",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "Result",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        }
+      ]
+    },
+    {
+      "name": "Change Log",
+      "description": "Every change the pipeline made, by stage, with rows affected.",
+      "columns": [
+        {
+          "name": "stage",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "check",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "rows_affected",
+          "type": "int64",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "finding",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "action",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        }
+      ]
+    },
+    {
+      "name": "Responses",
+      "description": "The published fact table: one row per donor per drive, anonymised (keyed HMAC donor IDs).",
+      "columns": [
+        {
+          "name": "response_id",
+          "type": "string",
+          "hidden": true,
+          "key": true
+        },
+        {
+          "name": "donor_id",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "drive_id",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "drive_name",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "drive_date",
+          "type": "dateTime",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "submitted_at",
+          "type": "dateTime",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "age",
+          "type": "double",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "age_band",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "gender",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "institution_group",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "blood_group",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "first_time",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "donated",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "deferral_reason",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "will_return",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "wants_reminder",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "has_later_drive",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "came_back_later",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        }
+      ]
+    },
+    {
+      "name": "Drives",
+      "description": "The drives in the published data.",
+      "columns": [
+        {
+          "name": "drive_id",
+          "type": "string",
+          "hidden": true,
+          "key": true
+        },
+        {
+          "name": "drive_name",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "drive_date",
+          "type": "dateTime",
+          "hidden": false,
+          "key": false
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "fromTable": "Responses",
+      "fromColumn": "drive_id",
+      "toTable": "Drives",
+      "toColumn": "drive_id",
+      "both": false
+    }
+  ],
+  "measures": [
+    {
+      "name": "Run Count",
+      "table": "Runs",
+      "folder": "Runs",
+      "format": "#,0",
+      "dax": "COUNTROWS ( Runs )",
+      "description": "Pipeline runs recorded."
+    },
+    {
+      "name": "Latest Status",
+      "table": "Runs",
+      "folder": "Runs",
+      "format": "General",
+      "dax": "VAR _last = CALCULATE ( MAX ( Runs[Run Number] ), REMOVEFILTERS ( Runs ) )\nRETURN UPPER ( CALCULATE ( MAX ( Runs[status] ), REMOVEFILTERS ( Runs ), Runs[Run Number] = _last ) )",
+      "description": "Status of the latest run."
+    },
+    {
+      "name": "Latest Rows In",
+      "table": "Runs",
+      "folder": "Runs",
+      "format": "#,0",
+      "dax": "VAR _last = CALCULATE ( MAX ( Runs[Run Number] ), REMOVEFILTERS ( Runs ) )\nRETURN CALCULATE ( SUM ( Runs[rows_in] ), REMOVEFILTERS ( Runs ), Runs[Run Number] = _last )",
+      "description": "Rows read by the latest run."
+    },
+    {
+      "name": "Latest Rows Out",
+      "table": "Runs",
+      "folder": "Runs",
+      "format": "#,0",
+      "dax": "VAR _last = CALCULATE ( MAX ( Runs[Run Number] ), REMOVEFILTERS ( Runs ) )\nRETURN CALCULATE ( SUM ( Runs[rows_out] ), REMOVEFILTERS ( Runs ), Runs[Run Number] = _last )",
+      "description": "Rows published by the latest run."
+    },
+    {
+      "name": "Rows Removed",
+      "table": "Runs",
+      "folder": "Runs",
+      "format": "#,0",
+      "dax": "[Latest Rows In] - [Latest Rows Out]",
+      "description": "Duplicates and misfiled rows removed in cleaning."
+    },
+    {
+      "name": "Rows In",
+      "table": "Runs",
+      "folder": "Runs",
+      "format": "#,0",
+      "dax": "SUM ( Runs[rows_in] )",
+      "description": "Rows read."
+    },
+    {
+      "name": "Rows Out",
+      "table": "Runs",
+      "folder": "Runs",
+      "format": "#,0",
+      "dax": "SUM ( Runs[rows_out] )",
+      "description": "Rows published."
+    },
+    {
+      "name": "Gates Passed",
+      "table": "Checks",
+      "folder": "Quality gates",
+      "format": "#,0",
+      "dax": "CALCULATE ( COUNTROWS ( Checks ), Checks[passed] == TRUE () )",
+      "description": "Quality gates passed in the latest run."
+    },
+    {
+      "name": "Gates",
+      "table": "Checks",
+      "folder": "Quality gates",
+      "format": "#,0",
+      "dax": "COUNTROWS ( Checks )",
+      "description": "Quality gates run."
+    },
+    {
+      "name": "Gates Summary",
+      "table": "Checks",
+      "folder": "Quality gates",
+      "format": "General",
+      "dax": "[Gates Passed] & \" of \" & [Gates] & \" passed\"",
+      "description": "For the card."
+    },
+    {
+      "name": "Errors Failed",
+      "table": "Checks",
+      "folder": "Quality gates",
+      "format": "#,0",
+      "dax": "CALCULATE ( COUNTROWS ( Checks ), Checks[passed] == FALSE (), Checks[level] = \"error\" ) + 0",
+      "description": "Failed error-level gates (any failure would have stopped publishing)."
+    },
+    {
+      "name": "Check-ins",
+      "table": "Responses",
+      "folder": "Published data",
+      "format": "#,0",
+      "dax": "COUNTROWS ( Responses )",
+      "description": "Published check-ins."
+    },
+    {
+      "name": "Donors",
+      "table": "Responses",
+      "folder": "Published data",
+      "format": "#,0",
+      "dax": "DISTINCTCOUNT ( Responses[donor_id] )",
+      "description": "Distinct anonymised donors."
+    },
+    {
+      "name": "Donation Rate",
+      "table": "Responses",
+      "folder": "Published data",
+      "format": "0.0%",
+      "dax": "DIVIDE ( CALCULATE ( [Check-ins], Responses[donated] == TRUE () ), [Check-ins] )",
+      "description": "Share of check-ins who donated."
+    },
+    {
+      "name": "Deferrals",
+      "table": "Responses",
+      "folder": "Published data",
+      "format": "#,0",
+      "dax": "CALCULATE ( [Check-ins], Responses[donated] == FALSE () )",
+      "description": "Check-ins turned away."
+    },
+    {
+      "name": "Changes Logged",
+      "table": "Change Log",
+      "folder": "Change log",
+      "format": "#,0",
+      "dax": "COUNTROWS ( 'Change Log' )",
+      "description": "Entries in the change log."
+    },
+    {
+      "name": "Rows Out Stage",
+      "table": "Stages",
+      "folder": "Runs",
+      "format": "#,0",
+      "dax": "SUM ( Stages[rows_out] )",
+      "description": "Rows leaving each stage."
+    }
+  ],
+  "pages": [
+    {
+      "page": "Control room",
+      "visuals": [
+        {
+          "type": "textbox",
+          "x": 24,
+          "y": 12,
+          "width": 1232,
+          "height": 52
+        },
+        {
+          "type": "card",
+          "x": 24,
+          "y": 76,
+          "width": 236,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 272,
+          "y": 76,
+          "width": 236,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 520,
+          "y": 76,
+          "width": 236,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 768,
+          "y": 76,
+          "width": 236,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 1016,
+          "y": 76,
+          "width": 240,
+          "height": 96
+        },
+        {
+          "type": "clusteredColumnChart",
+          "x": 24,
+          "y": 184,
+          "width": 600,
+          "height": 250
+        },
+        {
+          "type": "tableEx",
+          "x": 640,
+          "y": 184,
+          "width": 616,
+          "height": 250
+        },
+        {
+          "type": "clusteredColumnChart",
+          "x": 24,
+          "y": 446,
+          "width": 400,
+          "height": 262
+        },
+        {
+          "type": "tableEx",
+          "x": 440,
+          "y": 446,
+          "width": 816,
+          "height": 262
+        }
+      ]
+    },
+    {
+      "page": "Published data",
+      "visuals": [
+        {
+          "type": "textbox",
+          "x": 24,
+          "y": 12,
+          "width": 860,
+          "height": 52
+        },
+        {
+          "type": "slicer",
+          "x": 900,
+          "y": 8,
+          "width": 356,
+          "height": 64
+        },
+        {
+          "type": "card",
+          "x": 24,
+          "y": 76,
+          "width": 300,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 336,
+          "y": 76,
+          "width": 300,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 648,
+          "y": 76,
+          "width": 300,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 960,
+          "y": 76,
+          "width": 296,
+          "height": 96
+        },
+        {
+          "type": "clusteredColumnChart",
+          "x": 24,
+          "y": 184,
+          "width": 600,
+          "height": 524
+        },
+        {
+          "type": "clusteredBarChart",
+          "x": 640,
+          "y": 184,
+          "width": 616,
+          "height": 524
+        }
+      ]
+    }
+  ],
+  "base_url": "https://raw.githubusercontent.com/QaisBello/One-health-life-savers-blood-ledger-elt/main/"
+}

@@ -1,0 +1,55 @@
+/// Quality gates of the latest run (runs/latest.json). An error stops publishing; a warning is logged.
+table Checks
+
+	/// Quality gates passed in the latest run.
+	measure 'Gates Passed' = CALCULATE ( COUNTROWS ( Checks ), Checks[passed] == TRUE () )
+		formatString: #,0
+		displayFolder: Quality gates
+
+	/// Quality gates run.
+	measure Gates = COUNTROWS ( Checks )
+		formatString: #,0
+		displayFolder: Quality gates
+
+	/// For the card.
+	measure 'Gates Summary' = [Gates Passed] & " of " & [Gates] & " passed"
+		formatString: General
+		displayFolder: Quality gates
+
+	/// Failed error-level gates (any failure would have stopped publishing).
+	measure 'Errors Failed' = CALCULATE ( COUNTROWS ( Checks ), Checks[passed] == FALSE (), Checks[level] = "error" ) + 0
+		formatString: #,0
+		displayFolder: Quality gates
+
+	column name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: name
+
+	column level
+		dataType: string
+		summarizeBy: none
+		sourceColumn: level
+
+	column passed
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: passed
+
+	column Result
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Result
+
+	partition Checks = m
+		mode: import
+		source = ```
+				let
+				    Source = Json.Document(Web.Contents(BaseUrl, [RelativePath = "runs/latest.json"])),
+				    Checks = Table.FromRecords(Source[checks], {"name", "level", "passed"}, MissingField.UseNull),
+				    Typed = Table.TransformColumnTypes(Checks, {{"name", type text}, {"level", type text}, {"passed", type logical}}),
+				    Result = Table.AddColumn(Typed, "Result", each if [passed] then "Passed" else if [level] = "error" then "FAILED" else "Warning", type text)
+				in
+				    Result
+				```
+

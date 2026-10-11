@@ -1,0 +1,45 @@
+/// The latest run's stages in order (runs/latest.json): rows out and seconds taken.
+table Stages
+
+	/// Rows leaving each stage.
+	measure 'Rows Out Stage' = SUM ( Stages[rows_out] )
+		formatString: #,0
+		displayFolder: Runs
+
+	column stage
+		dataType: string
+		summarizeBy: none
+		sourceColumn: stage
+		sortByColumn: 'Stage Order'
+
+	column rows_out
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: rows_out
+
+	column seconds
+		dataType: double
+		formatString: 0.000
+		summarizeBy: none
+		sourceColumn: seconds
+
+	column 'Stage Order'
+		dataType: int64
+		isHidden
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: Stage Order
+
+	partition Stages = m
+		mode: import
+		source = ```
+				let
+				    Source = Json.Document(Web.Contents(BaseUrl, [RelativePath = "runs/latest.json"])),
+				    Stages = Table.FromRecords(Source[stages], {"stage", "rows_out", "seconds"}, MissingField.UseNull),
+				    Indexed = Table.AddIndexColumn(Stages, "Stage Order", 1, 1, Int64.Type),
+				    Result = Table.TransformColumnTypes(Indexed, {{"stage", type text}, {"rows_out", Int64.Type}, {"seconds", type number}})
+				in
+				    Result
+				```
+

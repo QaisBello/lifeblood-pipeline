@@ -1,0 +1,110 @@
+/// Every pipeline run (runs/history.json): when it finished, its status and row counts.
+table Runs
+
+	/// Pipeline runs recorded.
+	measure 'Run Count' = COUNTROWS ( Runs )
+		formatString: #,0
+		displayFolder: Runs
+
+	/// Status of the latest run.
+	measure 'Latest Status' =
+			VAR _last = CALCULATE ( MAX ( Runs[Run Number] ), REMOVEFILTERS ( Runs ) )
+			RETURN UPPER ( CALCULATE ( MAX ( Runs[status] ), REMOVEFILTERS ( Runs ), Runs[Run Number] = _last ) )
+		formatString: General
+		displayFolder: Runs
+
+	/// Rows read by the latest run.
+	measure 'Latest Rows In' =
+			VAR _last = CALCULATE ( MAX ( Runs[Run Number] ), REMOVEFILTERS ( Runs ) )
+			RETURN CALCULATE ( SUM ( Runs[rows_in] ), REMOVEFILTERS ( Runs ), Runs[Run Number] = _last )
+		formatString: #,0
+		displayFolder: Runs
+
+	/// Rows published by the latest run.
+	measure 'Latest Rows Out' =
+			VAR _last = CALCULATE ( MAX ( Runs[Run Number] ), REMOVEFILTERS ( Runs ) )
+			RETURN CALCULATE ( SUM ( Runs[rows_out] ), REMOVEFILTERS ( Runs ), Runs[Run Number] = _last )
+		formatString: #,0
+		displayFolder: Runs
+
+	/// Duplicates and misfiled rows removed in cleaning.
+	measure 'Rows Removed' = [Latest Rows In] - [Latest Rows Out]
+		formatString: #,0
+		displayFolder: Runs
+
+	/// Rows read.
+	measure 'Rows In' = SUM ( Runs[rows_in] )
+		formatString: #,0
+		displayFolder: Runs
+
+	/// Rows published.
+	measure 'Rows Out' = SUM ( Runs[rows_out] )
+		formatString: #,0
+		displayFolder: Runs
+
+	column run_id
+		dataType: string
+		isKey
+		summarizeBy: none
+		sourceColumn: run_id
+
+	column finished_at
+		dataType: dateTime
+		formatString: dd mmm yyyy hh:nn
+		summarizeBy: none
+		sourceColumn: finished_at
+
+	column status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	column trigger
+		dataType: string
+		summarizeBy: none
+		sourceColumn: trigger
+
+	column rows_in
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: rows_in
+
+	column rows_out
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: rows_out
+
+	column donors
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: donors
+
+	column donation_rate
+		dataType: double
+		formatString: 0.0%
+		summarizeBy: none
+		sourceColumn: donation_rate
+
+	column 'Run Number'
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: Run Number
+
+	partition Runs = m
+		mode: import
+		source = ```
+				let
+				    Source = Json.Document(Web.Contents(BaseUrl, [RelativePath = "runs/history.json"])),
+				    Records = Table.FromRecords(Source, {"run_id", "finished_at", "status", "trigger", "rows_in", "rows_out", "donors", "donation_rate"}, MissingField.UseNull),
+				    Typed = Table.TransformColumnTypes(Records, {{"run_id", type text}, {"finished_at", type datetimezone}, {"status", type text},
+				        {"trigger", type text}, {"rows_in", Int64.Type}, {"rows_out", Int64.Type}, {"donors", Int64.Type}, {"donation_rate", type number}}),
+				    Local = Table.TransformColumns(Typed, {{"finished_at", each DateTimeZone.RemoveZone(_), type datetime}}),
+				    Result = Table.AddIndexColumn(Local, "Run Number", 1, 1, Int64.Type)
+				in
+				    Result
+				```
+
